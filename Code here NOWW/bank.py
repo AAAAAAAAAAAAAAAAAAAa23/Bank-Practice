@@ -74,7 +74,7 @@ while True:
     print("2. Deposit Funds")
     print("3. Withdraw Funds")
     print("4. Display account information")
-    print("4. Exit")
+    print("5. Exit")
 
     choice = input("Enter your choice (1-4): ")
 
