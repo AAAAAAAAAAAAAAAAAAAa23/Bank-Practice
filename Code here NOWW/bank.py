@@ -67,6 +67,28 @@ def withdrawFunds():
     else:
         print("Account not found.")
 
+def displayAccontInfo():
+    account_number = input("Enter your account number: ")
+    pin_number = input("Enter your pin number: ")
+
+    #Look through the bank data and find the correct account
+    check_account_query = "SELECT * FROM bank_data WHERE account_number = %s and Pin = %s"
+    #Execute the SQL query with parameters
+    cursor.execute(check_account_query, (account_number, pin_number))
+    #Fetch the respective row
+    account_data = cursor.fetchone()
+
+    if account_data:
+        #Pull all informatoin in the table, table is setup with name, accountNum, Pin, balance
+        account_info = { 'Name': account_data[0],
+                         'Account Number': account_data[1],
+                         'Pin': account_data[2],
+                         'Balance': account_data[3]}
+        print("Account information")
+        for key, value in account_info.items():
+            print(f"{key}: {value}")
+    else:
+        print("Wrong pin or account number")
 
 while True:
     print("\nBanking System Menu:")
@@ -85,6 +107,8 @@ while True:
     elif choice == '3':
         withdrawFunds()
     elif choice == '4':
+        displayAccontInfo()
+    elif choice == '5':
         break
     else:
         print("Invalid choice. Please try again.")
