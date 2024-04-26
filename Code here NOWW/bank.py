@@ -139,7 +139,7 @@ def accountLookUp():
         print("Wrong name or pin")
 
 def testSystem():
-    #Goes through all implemented bank functions and wipes the test account
+    #Goes through all implemented bank functions and wipes the test
     createAccount()
     depositFunds()
     withdrawFunds()
