@@ -150,37 +150,7 @@ def testSystem():
 
 
 
-while True:
-    print("\nBanking System Menu:")
-    print("1. Create Account")
-    print("2. Deposit Funds")
-    print("3. Withdraw Funds")
-    print("4. Display account information")
-    print("5. Delete Account")
-    print("6.Account Look Up")
-    print("7.Test bank")
-    print("8. Exit")
 
-    choice = input("Enter your choice (1-8): ")
-
-    if choice == '1':
-        createAccount()
-    elif choice == '2':
-        depositFunds()
-    elif choice == '3':
-        withdrawFunds()
-    elif choice == '4':
-        displayAccontInfo()
-    elif choice == '5':
-        deleteAccount()
-    elif choice == '6':
-        accountLookUp()
-    elif choice == '7':
-        testSystem()
-    elif choice == '8':
-        break
-    else:
-        print("Invalid choice. Please try again.")
 
 cursor.close()
 connection.close()
