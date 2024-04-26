@@ -138,6 +138,16 @@ def accountLookUp():
     else:
         print("Wrong name or pin")
 
+def testSystem():
+    #Goes through all implemented bank functions and wipes the test account
+    createAccount()
+    depositFunds()
+    withdrawFunds()
+    displayAccontInfo()
+    accountLookUp()
+    deleteAccount()
+    print("Test succesfully passed")
+
 
 
 while True:
@@ -148,9 +158,10 @@ while True:
     print("4. Display account information")
     print("5. Delete Account")
     print("6.Account Look Up")
-    print("7. Exit")
+    print("7.Test bank")
+    print("8. Exit")
 
-    choice = input("Enter your choice (1-7): ")
+    choice = input("Enter your choice (1-8): ")
 
     if choice == '1':
         createAccount()
@@ -165,6 +176,8 @@ while True:
     elif choice == '6':
         accountLookUp()
     elif choice == '7':
+        testSystem()
+    elif choice == '8':
         break
     else:
         print("Invalid choice. Please try again.")
