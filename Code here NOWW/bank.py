@@ -115,6 +115,30 @@ def deleteAccount():
     else:
         print("Account deletion cancelled.")
 
+def accountLookUp():
+    name = input("Enter your name: ")
+    pin = input("Enter your pin: ")
+
+    #Find the account based on name and pin
+    find_account_query = "SELECT * FROM bank_data WHERE name = %s AND pin = %s"
+    #Execute the SQL query with parameters
+    cursor.execute(find_account_query, (name, pin))
+    #Fetch the account data
+    account_data = cursor.fetchone()
+
+    if account_data:
+        #Pull all informatoin in the table, table is setup with name, accountNum, Pin, balance
+        account_info = { 'Name': account_data[0],
+                         'Account Number': account_data[1],
+                         'Pin': account_data[2],
+                         'Balance': account_data[3]}
+        print("Account information")
+        for key, value in account_info.items():
+            print(f"{key}: {value}")
+    else:
+        print("Wrong name or pin")
+
+
 
 while True:
     print("\nBanking System Menu:")
@@ -123,9 +147,10 @@ while True:
     print("3. Withdraw Funds")
     print("4. Display account information")
     print("5. Delete Account")
-    print("6. Exit")
+    print("6.Account Look Up")
+    print("7. Exit")
 
-    choice = input("Enter your choice (1-6): ")
+    choice = input("Enter your choice (1-7): ")
 
     if choice == '1':
         createAccount()
@@ -138,6 +163,8 @@ while True:
     elif choice == '5':
         deleteAccount()
     elif choice == '6':
+        accountLookUp()
+    elif choice == '7':
         break
     else:
         print("Invalid choice. Please try again.")
