@@ -90,15 +90,42 @@ def displayAccontInfo():
     else:
         print("Wrong pin or account number")
 
+def deleteAccount():
+    name = input("Enter your name: ")
+    account_number = input("Enter your account number: ")
+    pin_number = input("Enter your PIN number: ")
+
+    double_check = input("Are you sure you want to delete your account? (Y/N): ")
+
+    if double_check.upper() == "Y":
+        # Define the SQL query to delete the account based on name, account number, and PIN
+        delete_account_query = "DELETE FROM bank_data WHERE name = %s AND account_number = %s AND pin = %s"
+
+        try:
+            # Execute the delete query with the specified parameters
+            cursor.execute(delete_account_query, (name, account_number, pin_number))
+            connection.commit()
+
+            if cursor.rowcount > 0:
+                print("Account deleted successfully.")
+            else:
+                print("No account found matching the provided details.")
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+    else:
+        print("Account deletion cancelled.")
+
+
 while True:
     print("\nBanking System Menu:")
     print("1. Create Account")
     print("2. Deposit Funds")
     print("3. Withdraw Funds")
     print("4. Display account information")
-    print("5. Exit")
+    print("5. Delete Account")
+    print("6. Exit")
 
-    choice = input("Enter your choice (1-4): ")
+    choice = input("Enter your choice (1-6): ")
 
     if choice == '1':
         createAccount()
@@ -109,6 +136,8 @@ while True:
     elif choice == '4':
         displayAccontInfo()
     elif choice == '5':
+        deleteAccount()
+    elif choice == '6':
         break
     else:
         print("Invalid choice. Please try again.")
