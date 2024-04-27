@@ -2,13 +2,15 @@ import mysql.connector
 import random
 
 
-connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+#connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
 
-cursor = connection.cursor()
+#cursor = connection.cursor()
 
-def createAccount():
-    name = input("Enter your name: ")
-    pin = input("Set your 4-digit PIN: ")
+def createAccount(nameFromGUI, pinFromGUI):
+    connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+    cursor = connection.cursor()
+    name = nameFromGUI
+    pin = pinFromGUI
     account_number = generateAccountNumber()  # Generate a unique account number
     balance = 0.0  # Initial balance for new account
 
@@ -20,13 +22,17 @@ def createAccount():
     connection.commit()
 
     print(f"Account created successfully! Account Number: {account_number}")
+    cursor.close()
+    connection.close()
 
 def generateAccountNumber():
     return ''.join(str(random.randint(0, 9)) for _ in range(8))
 
-def depositFunds():
-    account_number = input("Enter your account number: ")
-    amount = float(input("Enter deposit amount: "))
+def depositFunds(account_numberFromGUI, amountFromGUI):
+    connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+    cursor = connection.cursor()
+    account_number = account_numberFromGUI
+    amount = float(amountFromGUI)
 
     # Update the balance in the database
     update_query = "UPDATE bank_data SET balance = balance + %s WHERE account_number = %s"
@@ -39,10 +45,14 @@ def depositFunds():
     updated_balance = cursor.fetchone()[0]
     print("Deposit successful!")
     print(f"Your new balance ${updated_balance:.2f}")
+    cursor.close()
+    connection.close()
 
-def withdrawFunds():
-    account_number = input("Enter your account number: ")
-    amount = float(input("Enter withdrawal amount: "))
+def withdrawFunds(account_numberFromGUI, amountFromGUI):
+    connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+    cursor = connection.cursor()
+    account_number = account_numberFromGUI
+    amount = float(amountFromGUI)
 
     # Check if there's enough balance to withdraw
     check_balance_query = "SELECT balance FROM bank_data WHERE account_number = %s"
@@ -66,15 +76,18 @@ def withdrawFunds():
             print("Insufficient funds for withdrawal.")
     else:
         print("Account not found.")
+    cursor.close()
+    connection.close()
 
-def displayAccontInfo():
-    account_number = input("Enter your account number: ")
-    pin_number = input("Enter your pin number: ")
+def displayAccountInfo(account_numberFromGUI):
+    connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+    cursor = connection.cursor()
+    account_number = account_numberFromGUI
 
     #Look through the bank data and find the correct account
     check_account_query = "SELECT * FROM bank_data WHERE account_number = %s and Pin = %s"
     #Execute the SQL query with parameters
-    cursor.execute(check_account_query, (account_number, pin_number))
+    cursor.execute(check_account_query, (account_number))
     #Fetch the respective row
     account_data = cursor.fetchone()
 
@@ -89,11 +102,15 @@ def displayAccontInfo():
             print(f"{key}: {value}")
     else:
         print("Wrong pin or account number")
+    cursor.close()
+    connection.close()
 
-def deleteAccount():
-    name = input("Enter your name: ")
-    account_number = input("Enter your account number: ")
-    pin_number = input("Enter your PIN number: ")
+def deleteAccount(nameFromGUI, account_numberFromGUI, pin_numberFROMGUI):
+    connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+    cursor = connection.cursor()
+    name = nameFromGUI
+    account_number = account_numberFromGUI
+    pin_number = pin_numberFROMGUI
 
     double_check = input("Are you sure you want to delete your account? (Y/N): ")
 
@@ -114,10 +131,14 @@ def deleteAccount():
             print(f"Error: {err}")
     else:
         print("Account deletion cancelled.")
+    cursor.close()
+    connection.close()
 
-def accountLookUp():
-    name = input("Enter your name: ")
-    pin = input("Enter your pin: ")
+def accountLookUp(nameFromGUI, pinFromGUI):
+    connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+    cursor = connection.cursor()
+    name = nameFromGUI
+    pin = pinFromGUI
 
     #Find the account based on name and pin
     find_account_query = "SELECT * FROM bank_data WHERE name = %s AND pin = %s"
@@ -138,19 +159,6 @@ def accountLookUp():
     else:
         print("Wrong name or pin")
 
-def testSystem():
-    #Goes through all implemented bank functions and wipes the test
-    createAccount()
-    depositFunds()
-    withdrawFunds()
-    displayAccontInfo()
-    accountLookUp()
-    deleteAccount()
-    print("Test succesfully passed")
+    cursor.close()
+    connection.close()
 
-
-
-
-
-cursor.close()
-connection.close()

@@ -1,6 +1,11 @@
+import mysql
 import tkinter as tk
 from tkinter import messagebox
 import bank  # Import banking functions from bank.py
+
+
+connection = mysql.connector.connect(user = 'root', database = 'bank', password = 'password123')
+cursor = connection.cursor()
 
 def createAccount():
     def submitAccount():
@@ -81,7 +86,7 @@ def displayAccountInfo():
     def showAccount():
         account_number = account_entry.get()
 
-        account_info = bank.getAccountInfo(account_number)
+        account_info = bank.displayAccountInfo(account_number)
 
         if account_info:
             messagebox.showinfo("Account Information", 
@@ -163,10 +168,16 @@ def deleteAccount():
     submit_button = tk.Button(delete_window, text="Delete Account", command=confirmDelete)
     submit_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10, ipadx=50)
 
+def closeBank():
+    bank.cursor.close()
+    bank.connection.close()
 
 # Create the main GUI window
 root = tk.Tk()
 root.title("Banking System")
+
+#Closes connection after the main window is closed
+root.protocol("WM_DELETE_WINDOW", closeBank())
 
 # Create buttons for different operations
 tk.Button(root, text="Create New Account", command=createAccount).pack(pady=10)
@@ -178,3 +189,5 @@ tk.Button(root, text="Look Up Account", command=accountLookUp).pack(pady=10)
 
 # Start the main event loop
 root.mainloop()
+
+
