@@ -1,4 +1,4 @@
-*This is functional basic bank program 
+*This is a basic bank program 
 
 *Terminal will also output results incase the information is lost or forgotten
 
